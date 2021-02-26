@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\MarketQuery;
 use App\Entity\Supplier;
 use App\Repository\SupplierRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,19 +19,12 @@ class CreateQuenyAsJob extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Query', TextType::class,
-                array('attr' => array('class' => 'api_request',
-                    'disabled' => false, 'required' => false)))
-            ->add('supplier', EntityType::class, [
+            ->add('Query', EntityType::class, [
                 'attr' => [
                     'class' => 'api_supplier',
                 ],
-                'class' => Supplier::class,
-                'choice_label' => 'name',
-                'query_builder' => function (SupplierRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.name', 'ASC');
-                },
+                'class' => MarketQuery::class,
+                'choice_label' => 'label'
             ])
             ->add('Schedule', TextType::class,
                 ['attr' => array('class' => 'api_schedule'),
@@ -44,11 +38,6 @@ class CreateQuenyAsJob extends AbstractType
             ->add('Retry', IntegerType::class,
                 array('attr' => array('class' => 'api_retry', 'min' => 2, 'max' => 20))
             )
-            ->add('TYPE', ChoiceType::class, [
-                'attr' => [
-                    'class' => 'api_type',
-                ],
-                'choices' => ['GET' => 'GET', 'POST' => 'POST', 'PATCH' => 'PATCH'],])
             ->add('save', SubmitType::class, array('attr' => [
                 'class' => 'submit'],
                 'label' => 'Save Query as CronJob'));

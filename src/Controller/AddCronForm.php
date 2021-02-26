@@ -41,7 +41,6 @@ class AddCronForm extends AbstractController  //extends CronCommand //only for g
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'User tried to access a page without having ROLE_USER');
         $createQuenyform = $this->createForm(CreateQuenyAsJob::class)->handleRequest($request);
-
         $createTaskform = $this->createForm(CreateTask::class)->handleRequest($request);
         $taskDeleteForm = $this->createForm(TaskDelete::class)->handleRequest($request);
         $form3 = $this->createForm(CronTaskRun::class)->handleRequest($request);
@@ -52,15 +51,20 @@ class AddCronForm extends AbstractController  //extends CronCommand //only for g
             if ($entityManager->getRepository(Crontask::class)->findOneBy(['priority' => $createQuenyform['Priority']->getData()])) {
                 $form4->get('result')->setData(date("H:i:s", time()) . ' Wrong Priority');
             }
-            $this->customCron->newCronTask($createQuenyform['supplier']->getData()->getName() . ' ' . $createQuenyform['TYPE']->getData(),
-                'cron:custom_command ' . $createQuenyform['Query']->getData() . ' ' . $createQuenyform['supplier']->getData()->getName() . ' '
-                . $createQuenyform['TYPE']->getData() . ' '
-                . $createQuenyform['Retry']->getData(),
-                $createQuenyform['Schedule']->getData(),
-                $createQuenyform['Priority']->getData(),
-                $createQuenyform['Retry']->getData()
-            );
-        }
+            $query = $entityManager->getRepository(\App\Entity\MarketQuery::class)->findOneBy(['label' =>
+                $createQuenyform['Query']->getData()->getLabel()]);
+            try {
+                $this->customCron->newCronTask($query->getLabel(),
+                    'cron:custom_command ' . $query->getQuery() . ' ' . $query->getSupplier() . ' ' . $query->getRequestType(),
+                    $createQuenyform['Schedule']->getData(),
+                    $createQuenyform['Priority']->getData(),
+                    $createQuenyform['Retry']->getData()
+                );
+            }
+        catch(\Exception $e)
+        {
+            $form4->get('result')->setData(date("H:i:s", time()) . ' ERROR');
+        }}
 
         if ($createTaskform->isSubmitted() && $createTaskform->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();

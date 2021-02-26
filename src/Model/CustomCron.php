@@ -28,14 +28,14 @@ class CustomCron
     {
         $job = new CronJob();
         $job->setName($name);
-        $job->setCommand($job_c . ' ' . $retry);       //also add retry here as argument!
+        $job->setCommand($job_c . ' ' . $retry);
         $job->setSchedule($schedule);
         $job->setDescription('cron job');
-        $job->setEnabled(false); //change to true after smoke-test!
+        $job->setEnabled(false);                        //change to true after smoke-test!
         $this->container->get('cron.manager')->saveJob($job);
 
-        $Task = new Crontask();
-        $Task->setName($job_c);
+        $Task = new Crontask();                     //internal table for statistic only!
+        $Task->setName($name);
         $Task->setSchedule($schedule);
         $Task->setDetails($job_c);
         $Task->setType('Task');
