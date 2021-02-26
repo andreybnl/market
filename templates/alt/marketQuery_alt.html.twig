@@ -1,0 +1,110 @@
+{% extends "default/default.html.twig" %}
+
+{% block title %}
+    {{ 'Manual request'|trans }}
+{% endblock title %}
+
+{% block content %}
+<style>
+    .api_answer {
+
+        height: 400px !important;
+        width: 195% ;
+        font-size: 14pt;
+    }
+
+    .api_body {
+        height: 200px;
+        width: 100%;
+        font-size: 14pt;
+    }
+
+    .api_request {
+        width: 195%;
+        margin: 0.5%;
+        margin-left: 0.1%;
+    }
+
+    .api_type {
+        margin: 1.5%;
+        width: 55%;
+        margin-left: 4%;
+    }
+
+    .api_url {
+        margin-left: 1.7%;
+        width: 40%;
+    }
+
+    .api_result {
+        color: red;
+        font-size: 18pt;
+        width: 195%;
+        margin-left: 0.5%;
+    }
+
+    .sup_choose{
+        margin: 1%;
+        margin-left: 1.58%;
+        width: 55%;
+    }
+
+    .query_choose{
+        margin: 1%;
+        margin-left: 4.58%;
+        width: 55%;
+    }
+
+    .api_label
+    {
+        margin: 1%;
+        width: 55%;
+        margin-left: 5%;
+    }
+
+    .submit
+    {
+        margin-bottom: 1%;
+        width: 15%;
+    }
+</style>
+
+    {% set styleConfiguration = {'class': 'form-control'} %}
+    <div class="col-lg-6 col-sm-12">
+        {{ form_start( form ) }}
+        {# Form's fields #}
+        {{ form_row( form.supplier ) }}
+        {{ form_row( form.Request ) }}
+        {{ form_row( form.TYPE) }}
+        {# Form's actions #}
+        <div class="row">
+            {{ form_widget( form.send, {'attr': {'class': 'btn btn-success btn-lg pull-left'} } ) }}
+        </div>
+        {{ form_row( form.label) }}
+        <div class="row">
+            {{ form_widget( form.save, {'attr': {'class': 'btn btn-success btn-lg pull-left'} } ) }}
+        </div>
+        {{ form_end( form ) }}
+        </br>
+
+        {{ form_start( form2 ) }}
+        {{ form_row( form2.query ) }}
+        <div class="row">
+            {{ form_widget( form2.run, {'attr': {'class': 'btn btn-success btn-lg pull-left'} } ) }}
+        </div>
+
+        <div class="row">
+            {{ form_widget( form2.delete, {'attr': {'class': 'btn btn-default btn-lg'} } ) }}
+        </div>
+        {{ form_end( form2) }}
+        </br>
+        {{ form_start( form3 ) }}
+        {{ form_end( form3) }}
+        <a href="/login ">click here to re-LOGIN/LOGOUT</a>
+        </br>
+        <a href="/showcronalt ">click here for return to mainmenu</a>
+    </div>
+
+
+
+{% endblock content %}

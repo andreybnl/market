@@ -1,0 +1,86 @@
+{% extends "default/default.html.twig" %}
+
+{% block title %}
+    {{ 'Manual request'|trans }}
+{% endblock title %}
+
+{% block content %}
+
+    <style>
+
+        .api_answer {
+            height: 400px !important;
+            width: 195% ;
+            font-size: 14pt;
+        }
+
+        .api_body {
+            height: 200px;
+            width: 100%;
+            font-size: 14pt;
+        }
+
+        .api_request {
+            width: 195%;
+            margin: 0.5%;
+            margin-left: 0.1%;
+        }
+
+        .api_type {
+            width: 99.5%;
+            margin-left: 0.1%;
+        }
+
+        .api_url {
+            margin-left: 1.7%;
+            width: 40%;
+        }
+
+        .api_result {
+            color: red;
+            font-size: 18pt;
+            width: 99%;
+            margin-left: 0.5%;
+        }
+
+        .api_supplier{
+            margin: 1%;
+            margin-left: 1.58%;
+            width: 5%;
+        }
+
+        .submit
+        {
+            width: 10%;
+        }
+
+
+    </style>
+
+
+    {% set styleConfiguration = {'class': 'form-control'} %}
+    <div class="col-lg-6 col-sm-12">
+        {{ form_start( form ) }}
+
+        {# Form's fields #}
+        {{ form_row( form.Request ) }}
+        {{ form_row( form.supplier, {'attr': styleConfiguration } ) }}
+        {{ form_row( form.TYPE) }}
+        {{ form_row( form.body) }}
+
+
+        {# Form's actions #}
+        <div class="row">
+            <a href="{{ path('showcronalt') }}" class="btn btn-default btn-lg" role="button">Back to menu</a>
+
+            {{ form_widget( form.save, {'attr': {'class': 'btn btn-success btn-lg pull-right'} } ) }}
+        </div>
+        {{ form_end( form ) }}
+
+        {{ form_start( form3 ) }}
+        {{ form_end( form3) }}
+
+    </div>
+
+
+{% endblock content %}

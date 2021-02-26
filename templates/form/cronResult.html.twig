@@ -1,0 +1,115 @@
+<style>
+    body{
+        background-color: aliceblue;
+    }
+    </style>
+    <div class="table-responsive">
+
+        <a href="/cronaddform">click here to start(or delete) New CRON task </a>
+        </br>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="/user_form">click here to edit user(ADMIN ONLY!)</a>
+            </br>
+            <a href="/editsupplier">click here to edit supplier data((ADMIN ONLY!))</a>
+        {% endif %}
+
+        </br>
+        <a href="/manualform">click here to start manual query</a>
+        </br>
+        <a href="/login ">click here to re-LOGIN/LOGOUT</a>
+        </br></br>
+    Already prepaired tasks:
+    <table class="table table-condensed" border="1" cellpadding="10">
+        <tr>
+            <th><h4> ID</h4></th>
+            <th><h4> code </h4></th>
+            <th><h4> created </h4></th>
+        </tr>
+        {% for tasks in tasks %}
+            <tr>
+                <td> {{ tasks.ID }}                 </td>
+                <td> {{ tasks.code }}           </td>
+                <td> {{ tasks.created|date("m/d/Y H/i/s") }}       </td>
+            </tr>
+        {% endfor %}
+    </table>
+        </br>
+    Active CRONs:
+    <table class="table table-condensed" border="1" cellpadding="10">
+        <tr>
+            <th><h4> ID</h4></th>
+            <th><h4> type </h4></th>
+            <th><h4> name </h4></th>
+            <th><h4> schedule </h4></th>
+            <th><h4> details </h4></th>
+            <th><h4> max retry </h4></th>
+            <th><h4> cron_start </h4></th>
+            <th><h4> cron_end </h4></th>
+            <th><h4> duration(ms) </h4></th>
+            <th><h4> last_status </h4></th>
+        </tr>
+        {% for crontasks in crontasks %}
+            <tr>
+                <td> {{ crontasks.ID }}                 </td>
+                <td> {{ crontasks.type }}           </td>
+                <td> {{ crontasks.name }}           </td>
+                <td> {{ crontasks.schedule }}           </td>
+                <td> {{ crontasks.details }}           </td>
+                <td> {{ crontasks.retry }}           </td>
+                <td> {{ crontasks.cronStart|date("m/d/Y H/i/s") }}       </td>
+                <td> {{ crontasks.cronEnd|date("m/d/Y H/i/s") }}       </td>
+                <td> {{ crontasks.cronDuration }}           </td>
+                <td> {{ crontasks.lastStatus }}           </td>
+            </tr>
+        {% endfor %}
+    </table>
+        </br>
+    Last task logs:
+    <table class="table table-condensed" border="1" cellpadding="10">
+        <tr>
+            <th><h4> ID</h4></th>
+            <th><h4> task_code </h4></th>
+            <th><h4> start_time </h4></th>
+            <th><h4> record_size </h4></th>
+            <th><h4> records </h4></th>
+            <th><h4> records_proceed </h4></th>
+            <th><h4> records_error </h4></th>
+        </tr>
+        {% for task_log in task_log %}
+            <tr>
+                <td> {{ task_log.ID }}                 </td>
+                <td> {{ task_log.taskCode }}           </td>
+                <td> {{ task_log.startTime |date("m/d/Y H/i/s") }}           </td>
+                <td> {{ task_log.requestSize }}           </td>
+                <td> {{ task_log.records }}           </td>
+                <td> {{ task_log.recordsProcessed }}           </td>
+                <td> {{ task_log.recordsError }}           </td>
+            </tr>
+        {% endfor %}
+    </table>
+        </br>
+    Last queny logs:
+    <table class="table table-condensed" border="1" cellpadding="10">
+        <tr>
+            <th><h4> ID</h4></th>
+            <th><h4> queny </h4></th>
+            <th><h4> answer </h4></th>
+            <th><h4> last run </h4></th>
+            <th><h4> responce </h4></th>
+        </tr>
+        {% for queny_log in queny_log %}
+            <tr>
+                <td> {{ queny_log.ID }}                 </td>
+                <td> {{ queny_log.quent}}                 </td>
+                <td> {{ queny_log.answer}}                 </td>
+                <td> {{ queny_log.dateTime | date("m/d/Y H/i/s") }}    </td>
+                <td> {{ queny_log.responceCode}}                 </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+
+

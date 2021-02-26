@@ -1,0 +1,71 @@
+<style>
+    body {
+        background-color: aliceblue;
+    }
+
+    .api_answer {
+        height: 30%;
+        width: 95%;
+        resize: vertical;
+        font-size: 14pt;
+        white-space: normal;
+        text-align: start;
+    }
+
+    .api_body {
+        height: 30%;
+        width: 95%;
+        resize: vertical;
+        font-size: 14pt;
+        white-space: normal;
+        text-align: start;
+        margin-left: 1%;
+    }
+
+    .api_request {
+        width: 95%;
+        margin: 0.5%;
+        margin-left: 0.1%;
+    }
+
+    .api_type {
+        margin: 0.5%;
+        width: 5.5%;
+    }
+
+    .api_url {
+        margin-left: 1.7%;
+        width: 95%;
+    }
+
+    .api_result {
+        color: red;
+        font-size: 18pt;
+        width: 95%;
+        margin: 1%;
+        margin-left: 0.5%;
+    }
+
+    .api_supplier{
+        margin: 1%;
+        margin-left: 1.58%;
+        width: 5%;
+    }
+
+    .submit
+    {
+        width: 10%;
+    }
+
+</style>
+
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+{{ form_start(form3) }}
+{{ form_widget(form3) }}
+{{ form_end(form3) }}
+<script src = "{{ asset('app.js') }}"></script>
+<a href="/login ">click here to re-LOGIN/LOGOUT</a>
+</br>
+<a href="/showcron ">click here for return to mainmenu</a>

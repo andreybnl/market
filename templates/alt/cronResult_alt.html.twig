@@ -1,0 +1,77 @@
+<style>
+    body{
+        background-color: lightgrey;
+    }
+</style>
+<div class="table-responsive">
+
+    <a href="/command-scheduler/detail/new">click here to Create NEW CRON</a>
+    </br>
+    <a href="/command-scheduler/list">click here to open CRON menu</a>
+    </br>
+    <a href="/manualformalt">click here to start manual query</a>
+    </br>
+    {% if is_granted('ROLE_ADMIN') %}
+        </br>
+        <a href="/user_formalt">click here to edit user(ADMIN ONLY!)</a>
+        </br>
+        <a href="/editsupplieralt">click here to edit supplier data((ADMIN ONLY!))</a>
+    {% endif %}
+    </br>
+    </br>
+    <a href="/login ">click here to re-LOGIN/LOGOUT</a>
+    </br></br>
+    Last task logs:
+    <table class="table table-condensed" border="1" cellpadding="10">
+        <tr>
+            <th><h4> ID</h4></th>
+            <th><h4> task_code </h4></th>
+            <th><h4> record_size </h4></th>
+            <th><h4> records </h4></th>
+            <th><h4> records_proceed </h4></th>
+            <th><h4> records_error </h4></th>
+            <th><h4> start_time </h4></th>
+            <th><h4> end_time </h4></th>
+            <th><h4> duration(uc) </h4></th>
+            <th><h4> status </h4></th>
+        </tr>
+
+        {% for task_log in task_log %}
+            <tr>
+                <td> {{ task_log.ID }}                 </td>
+                <td> {{ task_log.taskCode }}           </td>
+                <td> {{ task_log.requestSize }}           </td>
+                <td> {{ task_log.records }}           </td>
+                <td> {{ task_log.recordsProcessed }}           </td>
+                <td> {{ task_log.recordsError }}           </td>
+                <td> {{ task_log.startTime |date("m/d/Y H/i/s") }} </td>
+                <td> {{ task_log.endTime |date("m/d/Y H/i/s") }} </td>
+                <td> {{ task_log.duration }}           </td>
+                <td> {{ task_log.status }}           </td>
+            </tr>
+        {% endfor %}
+    </table>
+    </br>
+    Last CustomCommand logs:
+    <table class="table table-condensed" border="1" cellpadding="10">
+        <tr>
+            <th><h4> ID</h4></th>
+            <th><h4> queny </h4></th>
+            <th><h4> answer </h4></th>
+            <th><h4> last run </h4></th>
+            <th><h4> responce </h4></th>
+        </tr>
+        {% for queny_log in queny_log %}
+            <tr>
+                <td> {{ queny_log.ID }}                 </td>
+                <td> {{ queny_log.quent}}                 </td>
+                <td> {{ queny_log.answer}}                 </td>
+                <td> {{ queny_log.dateTime | date("m/d/Y H/i/s") }}    </td>
+                <td> {{ queny_log.responceCode}}                 </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+
