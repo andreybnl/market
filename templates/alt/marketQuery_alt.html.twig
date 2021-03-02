@@ -64,23 +64,24 @@
 
     .submit
     {
-        margin-bottom: 1%;
-        width: 15%;
+
     }
 </style>
 
     {% set styleConfiguration = {'class': 'form-control'} %}
+
     <div class="col-lg-6 col-sm-12">
         {{ form_start( form ) }}
         {# Form's fields #}
-        {{ form_row( form.supplier ) }}
+        {{ form_row( form.supplier , {'attr': styleConfiguration }) }}
         {{ form_row( form.Request ) }}
-        {{ form_row( form.TYPE) }}
+        {{ form_row( form.TYPE, {'attr': styleConfiguration }) }}
         {# Form's actions #}
         <div class="row">
             {{ form_widget( form.send, {'attr': {'class': 'btn btn-success btn-lg pull-left'} } ) }}
         </div>
-        {{ form_row( form.label) }}
+        </br>
+        {{ form_row( form.label, {'attr': styleConfiguration }) }}
         <div class="row">
             {{ form_widget( form.save, {'attr': {'class': 'btn btn-success btn-lg pull-left'} } ) }}
         </div>
@@ -88,7 +89,7 @@
         </br>
 
         {{ form_start( form2 ) }}
-        {{ form_row( form2.query ) }}
+        {{ form_row( form2.query , {'attr': styleConfiguration }) }}
         <div class="row">
             {{ form_widget( form2.run, {'attr': {'class': 'btn btn-success btn-lg pull-left'} } ) }}
         </div>
@@ -104,7 +105,5 @@
         </br>
         <a href="/showcronalt ">click here for return to mainmenu</a>
     </div>
-
-
 
 {% endblock content %}

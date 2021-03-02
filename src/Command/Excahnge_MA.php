@@ -59,13 +59,13 @@ class Excahnge_MA extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute_was(InputInterface $input, OutputInterface $output)
     {
         $this->sentToAkeneo();
         return Command::SUCCESS;
     }
 
-    protected function execute_was(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $channel = '9dad6222fe469a393ffb0720';
 
@@ -82,8 +82,8 @@ class Excahnge_MA extends Command
                 $importResult = $this->storeMarketToDb($response, $response_add);
                 $this->taskLogger->CronLogUpdate(static::$defaultName, $startTime, $endTime,
                     strval($startTime->diff($endTime)->format("%s:%f")), $response->getStatusCode());
-                $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, strlen($response->getContent()),
-                    $importResult[0], $importResult[0], $importResult[1]); //TODO check!
+                $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, strlen($response->getContent()),$endTime,
+                    strval($startTime->diff($endTime)->format("%s:%f")),$importResult[0], $importResult[0], $importResult[1]); //TODO check!
                 //here will be request to Akeneo
 
             }

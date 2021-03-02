@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Command;
 
 use App\Entity\QuenyLog;
@@ -12,23 +13,27 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use App\Repository\SupplierRepository;
 use App\Model\Connector;
+use App\Model\Condition;
 
-class CustomCommandAlt extends Command
+class MarketCommandAlt extends Command
 {
-    protected static $defaultName = 'cron_prepared:custom_command';
+    protected static $defaultName = 'cron_prepared:market_command';
 
+    private $condition;
     private $connector;
     private $client;
     private $container;
     private $supplierRepository;
 
     public function __construct(
+        Condition $condition,
         Connector $connector,
         HttpClientInterface $client,
         ContainerInterface $container,
         SupplierRepository $supplierRepository
     )
     {
+        $this->condition = $condition;
         $this->connector = $connector;
         $this->client = $client;
         $this->container = $container;
@@ -39,20 +44,13 @@ class CustomCommandAlt extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Run any CURL command')
-            ->setHelp('This command allows you to Run any CURL command...')
-            ->addOption(
-                'queny',
-                'queny',
-                InputOption::VALUE_REQUIRED
-            )
-            ->addOption(
-                'supplier', 'sup', InputOption::VALUE_REQUIRED)
-            ->addOption('type', 'type', InputOption::VALUE_OPTIONAL, '', 'GET')
+            ->setDescription('Run any Market command')
+            ->setHelp('This command allows you to Run any Market command...')
+            ->addArgument('queny', InputArgument::REQUIRED)
             ->addOption(
                 'retry',
                 'retry',
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_REQUIRED,
                 'How many times should the queny repeated?',
                 2
             );
@@ -60,13 +58,14 @@ class CustomCommandAlt extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('supplier') && $input->getOption('queny')) {
-            $accessToken = $this->connector->getToken($input->getOption('supplier'));
+        try {
+    //        $this->condition->checkBusy();
+    //        $this->condition->createBusy();
+            $accessToken = $this->connector->getToken('PlantsMarket');
             $startTime = new \DateTime('now');
-            $response = $this->connector->getContent($accessToken, $input->getOption('supplier'),
-                $input->getOption('retry'), $input->getOption('queny'));
+            $response = $this->connector->getContent($accessToken, 'PlantsMarket',
+                $input->getOption('retry'), $input->getArgument('queny'));
             $entityManager = $this->container->get('doctrine')->getManager();
-            if ($response) {
                 $Log = new QuenyLog();
                 $Log->setQuent($input->getOption('supplier') . ' ' . $input->getOption('queny'));
                 $Log->setAnswer($response->getContent());
@@ -74,10 +73,10 @@ class CustomCommandAlt extends Command
                 $Log->setDateTime($startTime);
                 $entityManager->persist($Log);
                 $entityManager->flush();
-                //to tasks log too?
-                //it is possible to check - is this $defaultName present in scheduled table //? - not neccessary!
-            }
-            return Command::SUCCESS;
-        } else return Command::FAILURE;
+                $this->condition->deleteBusy();
+        } catch (\Exception $e) {
+            return Command::FAILURE;
+        }
+        return Command::SUCCESS;
     }
 }
