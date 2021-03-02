@@ -74,7 +74,7 @@ class ManualFormAlt extends AbstractController
                         NULL, $form['body']->getData());
                 }
             } catch (\Exception $exception) {
-                $form3->get('result')->setData(date("H:i:s", time()) . ' ERROR! ' .
+                $form3->get('result')->setData(date("H:i:s", time()) . ' IP ERROR! ' .
                     $supplier->getApiUrl() . $form['Request']->getData());
             }
         } else {
