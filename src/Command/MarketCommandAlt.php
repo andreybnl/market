@@ -4,6 +4,7 @@
 namespace App\Command;
 
 use App\Entity\QuenyLog;
+use http\Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,7 +47,7 @@ class MarketCommandAlt extends Command
         $this
             ->setDescription('Run any Market command')
             ->setHelp('This command allows you to Run any Market command...')
-            ->addArgument('queny', InputArgument::REQUIRED)
+            ->addArgument('query', InputArgument::REQUIRED)
             ->addOption(
                 'retry',
                 'retry',
@@ -58,25 +59,36 @@ class MarketCommandAlt extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $startTime = new \DateTime('now');
+        $entityManager = $this->container->get('doctrine')->getManager();
         try {
-    //        $this->condition->checkBusy();
-    //        $this->condition->createBusy();
-            $accessToken = $this->connector->getToken('PlantsMarket');
-            $startTime = new \DateTime('now');
-            $response = $this->connector->getContent($accessToken, 'PlantsMarket',
-                $input->getOption('retry'), $input->getArgument('queny'));
-            $entityManager = $this->container->get('doctrine')->getManager();
+            if ($this->condition->checkBusy()) {
+                throw new \Exception('Another process not terminated');
+            } else {
+                $this->condition->createBusy();
+                $accessToken = $this->connector->getToken('PlantsMarket');
+                $response = $this->connector->getContent($accessToken, 'PlantsMarket',
+                    $input->getOption('retry'), $input->getArgument('query'));
                 $Log = new QuenyLog();
-                $Log->setQuent($input->getOption('supplier') . ' ' . $input->getOption('queny'));
+                $Log->setQuent('market_command' . ' ' . $input->getArgument('query'));
                 $Log->setAnswer($response->getContent());
                 $Log->setResponceCode($response->getStatusCode());
                 $Log->setDateTime($startTime);
                 $entityManager->persist($Log);
                 $entityManager->flush();
-                $this->condition->deleteBusy();
+            }
         } catch (\Exception $e) {
+            $this->condition->deleteBusy();
+            $Log = new QuenyLog();
+            $Log->setQuent('market_command' . ' ' . $input->getArgument('query'));
+            $Log->setAnswer($e->getMessage());
+            $Log->setResponceCode('0');
+            $Log->setDateTime($startTime);
+            $entityManager->persist($Log);
+            $entityManager->flush();
             return Command::FAILURE;
         }
+        $this->condition->deleteBusy();
         return Command::SUCCESS;
     }
 }

@@ -28,7 +28,7 @@ class Condition
 
     public function checkBusy()
     {
-        return !($this->filesystem->exists('busy.txt'));
+        return ($this->filesystem->exists('busy.txt'));
     }
 
     public function deleteBusy()
