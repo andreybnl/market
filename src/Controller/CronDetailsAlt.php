@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 class CronDetailsAlt extends AbstractController
 {
     /**
-     * @Route("/showcronalt", name="showcronalt")
+     * @Route("/showcronalt", name="showcronalt", schemes={"https"})
+     * @Route("/", name="homepage",  schemes={"https"})
      */
     public function showCron(Request $request)
     {

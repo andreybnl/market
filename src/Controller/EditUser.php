@@ -27,25 +27,33 @@ class EditUser extends AbstractController
      */
     public function users(Request $request)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'User tried to access a page without having ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
-
+        $user = $this->getUser()->getRoles();
         $form = $this->createForm(EditUserForm::class, array('label' => 'Users'))->handleRequest($request);
-        $form2 = $this->createForm(CreateUser::class)->handleRequest($request);
-        $form3 = $this->createForm(DeleteUser::class)->handleRequest($request);
+        if ($user[0] == 'ROLE_ADMIN') {
+            $form2 = $this->createForm(CreateUser::class)->handleRequest($request);
+            $form3 = $this->createForm(DeleteUser::class)->handleRequest($request);
+        }
         $form4 = $this->createForm(Result::class)->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-            if($form['user']->getData()) {
-                $entityManager->getRepository(User::class)->upgradePassword($form['user']->getData(), $form['password']->getData());
-                $form4->get('result')->setData(date("H:i:s", time()) . ' User updated');
+            if ($form['user']->getData()) {
+                if ($user[0] !== 'ROLE_ADMIN' && ($form['user']->getData()->getEmail() !== $this->getUser()->getEmail())){
+                    $form4->get('result')->setData(date("H:i:s", time()) . ' You can change only your account password!');
+            }
+            else {
+                    $entityManager->getRepository(User::class)->upgradePassword($form['user']->getData(), $form['password']->getData());
+                    $form4->get('result')->setData(date("H:i:s", time()) . ' User updated');
+                }
             }
             else{
                 $form4->get('result')->setData(date("H:i:s", time()) . ' ERROR');
             }
         }
 
-        if ($form2->isSubmitted() && $form2->isValid()) {
+        if (isset($form2) && $form2->isSubmitted() && $form2->isValid()) {
             $firstUser = new User();
             $firstUser->setRoles(array('ROLE_USER'));
             $firstUser->setPassword($this->passwordEncoder->encodePassword(
@@ -56,21 +64,27 @@ class EditUser extends AbstractController
             $form4->get('result')->setData(date("H:i:s", time()) . ' User created');
         }
 
-        if ($form3->isSubmitted() && $form3->isValid()) {
-            if($form3['user']->getData()) {
+        if (isset($form3) && $form3->isSubmitted() && $form3->isValid()) {
+            if ($form3['user']->getData()) {
                 $entityManager->remove($form3['user']->getData());
                 $entityManager->flush();
                 $form4->get('result')->setData(date("H:i:s", time()) . ' User deleted');
-            }
-            else {
+            } else {
                 $form4->get('result')->setData(date("H:i:s", time()) . ' ERROR');
             }
         }
 
-        return $this->render('form/userform.html.twig', array(
-            'form' => $form->createView(),
-            'form2' => $form2->createView(),
-            'form3' => $form3->createView(),
-            'form4' => $form4->createView()));
+        if ($user[0] == 'ROLE_ADMIN') {
+            return $this->render('form/userform.html.twig', array(
+                'form' => $form->createView(),
+                'form2' => $form2->createView(),
+                'form3' => $form3->createView(),
+                'form4' => $form4->createView()));
+        }
+        else {
+            return $this->render('form/userformsimple.html.twig', array(
+                'form' => $form->createView(),
+                'form4' => $form4->createView()));
+        }
     }
 }

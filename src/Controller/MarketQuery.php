@@ -36,7 +36,7 @@ class MarketQuery extends AbstractController
     }
 
     /**
-     * @Route("/marketform", name = "market_form")
+     * @Route("/marketform", name = "market_form", schemes={"https"})
      */
     public function form(Request $request)
     {

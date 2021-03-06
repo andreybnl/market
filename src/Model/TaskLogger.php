@@ -15,6 +15,7 @@ class TaskLogger
         $this->em = $em;
     }
 
+
     //for update crontask table - with last data
     public function CronLogUpdate($taskName, $start, $end, $duration, $status)
     {
@@ -31,10 +32,12 @@ class TaskLogger
         return false;
     }
 
+
     //for update task_log table - table with every task run data
     public function TaskLogAdd($taskCode, $start, $size, $end, $duration, $status,
                                $record_t, $records_p, $records_e = 0)
     {
+        
         $TaskLog = new TaskLog();
         $TaskLog->setRecordsError($records_e);
         $TaskLog->setRecords($record_t);

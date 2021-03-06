@@ -1,6 +1,13 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+secure:
+  path:       /secure
+  controller: App\Controller\MainController::secure
+  schemes:    [https]
+
+
 app_lucky_number:
   path: /lucky/number
   controller: App\Controller\LuckyController::number

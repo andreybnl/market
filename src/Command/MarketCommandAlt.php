@@ -4,7 +4,6 @@
 namespace App\Command;
 
 use App\Entity\QuenyLog;
-use http\Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,11 +14,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use App\Repository\SupplierRepository;
 use App\Model\Connector;
 use App\Model\Condition;
+use App\Model\TaskLogger;
 
 class MarketCommandAlt extends Command
 {
     protected static $defaultName = 'cron_prepared:market_command';
 
+    private $taskLogger;
     private $condition;
     private $connector;
     private $client;
@@ -27,6 +28,7 @@ class MarketCommandAlt extends Command
     private $supplierRepository;
 
     public function __construct(
+        TaskLogger $taskLogger,
         Condition $condition,
         Connector $connector,
         HttpClientInterface $client,
@@ -34,6 +36,7 @@ class MarketCommandAlt extends Command
         SupplierRepository $supplierRepository
     )
     {
+        $this->taskLogger = $taskLogger;
         $this->condition = $condition;
         $this->connector = $connector;
         $this->client = $client;
@@ -76,6 +79,11 @@ class MarketCommandAlt extends Command
                 $Log->setDateTime($startTime);
                 $entityManager->persist($Log);
                 $entityManager->flush();
+                $endTime = new \DateTime('now');
+                $this->taskLogger->TaskLogAdd(static::$defaultName . ' ' . $input->getArgument('query'),
+                    $startTime, strlen($response->getContent()),$endTime,
+                    (integer)$startTime->diff($endTime)->format("%f"),0, 0, 0);
+
             }
         } catch (\Exception $e) {
             $this->condition->deleteBusy();

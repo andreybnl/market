@@ -83,7 +83,7 @@ class Excahnge_MA extends Command
                 $this->taskLogger->CronLogUpdate(static::$defaultName, $startTime, $endTime,
                     strval($startTime->diff($endTime)->format("%s:%f")), $response->getStatusCode());
                 $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, strlen($response->getContent()),$endTime,
-                    strval($startTime->diff($endTime)->format("%s:%f")),$importResult[0], $importResult[0], $importResult[1]); //TODO check!
+                    (integer)$startTime->diff($endTime)->format("%f"),$importResult[0], $importResult[0], $importResult[1]); //TODO check!
                 //here will be request to Akeneo
 
             }
