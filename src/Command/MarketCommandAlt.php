@@ -82,7 +82,7 @@ class MarketCommandAlt extends Command
                 $endTime = new \DateTime('now');
                 $this->taskLogger->TaskLogAdd(static::$defaultName . ' ' . $input->getArgument('query'),
                     $startTime, strlen($response->getContent()),$endTime,
-                    (integer)$startTime->diff($endTime)->format("%f"),0, 0, 0);
+                    (integer)$startTime->diff($endTime)->format("%f"),$response->getStatusCode(), 0, 0);
 
             }
         } catch (\Exception $e) {
