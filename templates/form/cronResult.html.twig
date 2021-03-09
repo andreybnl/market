@@ -98,7 +98,7 @@
             <th><h4> queny </h4></th>
             <th><h4> answer </h4></th>
             <th><h4> last run </h4></th>
-            <th><h4> responce </h4></th>
+            <th><h4> response </h4></th>
         </tr>
         {% for queny_log in queny_log %}
             <tr>
@@ -106,7 +106,7 @@
                 <td> {{ queny_log.quent}}                 </td>
                 <td> {{ queny_log.answer}}                 </td>
                 <td> {{ queny_log.dateTime | date("m/d/Y H/i/s") }}    </td>
-                <td> {{ queny_log.responceCode}}                 </td>
+                <td> {{ queny_log.responseCode}}                 </td>
             </tr>
         {% endfor %}
     </table>
