@@ -17,7 +17,7 @@ use App\Model\TaskLogger;
 
 class Excahnge_MA extends Command
 {
-    protected static $defaultName = 'cron_prepared:market_akeneo_sync';
+    protected static $defaultName = 'cron_not_prepared:market_akeneo_sync';
 
     private $taskLogger;
     private $connector;
@@ -75,7 +75,7 @@ class Excahnge_MA extends Command
             $response = $this->connector->getContent($token, 'PlantsMarket', $input->getArgument('retry'),
                 'v1/product/channel/' . $channel);
             $response_add = $this->connector->getContent($token, 'PlantsMarket', $input->getArgument('retry'),
-                '/v1/product/category/' . $channel); //if category will absent => remove!
+                '/v1/product/category/' . $channel);                //if category will absent => remove!
             $endTime = new \DateTime('now');
 
             if ($response && $response_add) {

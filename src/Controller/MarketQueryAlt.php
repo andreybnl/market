@@ -36,7 +36,7 @@ class MarketQueryAlt extends AbstractController
     }
 
     /**
-     * @Route("/marketformalt", name = "market_form_alt", schemes={"https"})
+     * @Route("/marketformalt", name = "market_form_alt")
      */
     public function form(Request $request)
     {
