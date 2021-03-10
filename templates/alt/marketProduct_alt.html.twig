@@ -1,0 +1,36 @@
+<style>
+    body{
+        background-color: lightgrey;
+    }
+</style>
+<div class="table-responsive">
+
+    </br>
+    Market products:
+    <table class="table table-condensed" border="1" cellpadding="10">
+        <tr>
+            <th><h4> ID</h4></th>
+            <th><h4> SKU </h4></th>
+            <th><h4> name </h4></th>
+            <th><h4> search_name </h4></th>
+            <th><h4> price </h4></th>
+            <th><h4> stock </h4></th>
+            <th><h4> edit time </h4></th>
+            <th><h4> RTL size </h4></th>
+        </tr>
+
+        {% for product in product %}
+            <tr>
+                <td> {{ product.id }}                 </td>
+                <td> {{ product.sku }}           </td>
+                <td> {{ product.name }}           </td>
+                <td> {{ product.nameSearch }}           </td>
+                <td> {{ product.chnPriceRetail }}           </td>
+                <td> {{ product.btchStock }}           </td>
+                <td> {{ product.editTime }}           </td>
+                <td> {{ product.rtlSizeCode }}           </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>

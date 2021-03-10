@@ -79,7 +79,7 @@ class MarketCommandAlt extends Command
                 $Log->setDateTime($startTime);
                 $entityManager->persist($Log);
                 $entityManager->flush();
-                $endTime = new \DateTime('now');
+                $endTime = new \DateTime('now');            //count throughout loop
                 $this->taskLogger->TaskLogAdd(static::$defaultName . ' ' . $input->getArgument('query'),
                     $startTime, strlen($response->getContent()),$endTime,
                     (integer)$startTime->diff($endTime)->format("%f"),$response->getStatusCode(), 0, 0);
