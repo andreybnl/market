@@ -6,6 +6,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\UserLoger;
 use App\Entity\TaskLog;
+use App\Entity\QuenyLog;
 use App\Entity\Crontask;
 use App\Entity\ManualLog;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
@@ -76,10 +77,21 @@ class TaskLogger
         return true;
     }
 
+    public function quenyLog($query, $answer, $statusCode, $time)
+    {
+        $quenyLog = new QuenyLog();
+        $quenyLog->setQuent($query);
+        $quenyLog->setAnswer($answer);
+        $quenyLog->setResponceCode($statusCode);
+        $quenyLog->setDateTime($time);
+        static::$entityManager->persist($quenyLog);
+        static::$entityManager->flush();
+    }
+
     public function userLog($user, $activity, $result)
     {
         $userLog = new UserLoger();
-        $userLog->setDateTime( new \DateTime('now'));
+        $userLog->setDateTime(new \DateTime('now'));
         $userLog->setUserLogin($user);
         $userLog->setActivity($activity);
         $userLog->setResult($result);

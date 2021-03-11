@@ -76,10 +76,17 @@ class MarketSavePrice extends Command
                 $response = $this->connector->getContent($token, 'PlantsMarket', $input->getOption('retry'),
                     'v1/channel/' . $channel . '/product/price');
                 $endTime = new \DateTime('now');
-                $this->storeMarketToDb($response);
+                $importResult = $this->storeMarketToDb($response);
+                $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, strlen($response->getContent()), $endTime,
+                    (integer)$startTime->diff($endTime)->format("%f"), $response->getStatusCode(),
+                    $importResult[0], $importResult[0], $importResult[1]);
             }
         } catch (\Exception $e) {
             $this->condition->deleteBusy();
+            $endTime = new \DateTime('now');
+            $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, 0, $endTime,
+                (integer)$startTime->diff($endTime)->format("%f"), $e->getMessage(),
+                0, 0, 0);
             return Command::FAILURE;
         }
         $this->condition->deleteBusy();

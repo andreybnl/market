@@ -21,7 +21,7 @@ class CronDetailsAlt extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'User tried to access a page without having ROLE_USER');
         $tasklog_repository = $this->getDoctrine()->getRepository(TaskLog::class);
-        $tasklog = $tasklog_repository->findBy(array(),array('id'=>'DESC'),3,0);
+        $tasklog = $tasklog_repository->findBy(array(),array('id'=>'DESC'),10,0);
         $quenylog_repository = $this->getDoctrine()->getRepository(QuenyLog::class);
         $quenylog = $quenylog_repository->findBy(array(),array('id'=>'DESC'),10,0);
 

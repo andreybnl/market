@@ -76,10 +76,17 @@ class MarketSaveProduct extends Command
                 $response = $this->connector->getContent($token, 'PlantsMarket', $input->getOption('retry'),
                     'v1/channel/' . $channel . '/product');
                 $endTime = new \DateTime('now');
-                $this->storeMarketToDb($response);
+                $importResult = $this->storeMarketToDb($response);
+                $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, strlen($response->getContent()), $endTime,
+                    (integer)$startTime->diff($endTime)->format("%f"), $response->getStatusCode(),
+                    $importResult[0], $importResult[0], $importResult[1]);
             }
         } catch (\Exception $e) {
             $this->condition->deleteBusy();
+            $endTime = new \DateTime('now');
+            $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, 0, $endTime,
+                (integer)$startTime->diff($endTime)->format("%f"), $e->getMessage(),
+                0, 0, 0);
             return Command::FAILURE;
         }
         $this->condition->deleteBusy();
@@ -118,7 +125,7 @@ class MarketSaveProduct extends Command
                     $product->setNameSearch(isset($result['name_search']) ? $result['name_search'] : '0');
                     $product->setName(isset($result['name']) ? $result['name'] : '0');
                     $product->setRtlSizeCode(isset($result['rtl_size_code']) ? $result['rtl_size_code'] : '0');
-                    $product->setBtchStock(isset($result['btch_stock']) ? $result['btch_stock'] : '0');
+             //       $product->setBtchStock(isset($result['btch_stock']) ? $result['btch_stock'] : '0');
                     $product->setBatchIdOriginal(isset($result['batchIdOriginal']) ? $result['batchIdOriginal'] : '0');
                     $product->setBtchStockTotal(isset($result['btch_stock_total']) ? $result['btch_stock_total'] : '0');
                     $product->setBtchContainerType(isset($result['btch_container_type']) ? $result['btch_container_type'] : '0');
@@ -127,7 +134,7 @@ class MarketSaveProduct extends Command
                     $product->setBtchContainerShape(isset($result['btch_container_shape']) ? $result['btch_container_shape'] : '0');
                     $product->setBtchContainerContents(isset($result['btch_container_contents']) ? $result['btch_container_contents'] : '0');
                     $product->setBtchContainerDiameter(isset($result['btch_container_diameter']) ? $result['btch_container_diameter'] : '0');
-                    $product->setChnPriceRetail(isset($result['chn_price_retail']) ? $result['chn_price_retail'] : '0');
+              //      $product->setChnPriceRetail(isset($result['chn_price_retail']) ? $result['chn_price_retail'] : '0');
                     if (isset($result['btch_stem_height'])) {
                         $product->setBtchStemHeight($result['btch_stem_height']);
                     }

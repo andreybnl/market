@@ -170,14 +170,14 @@ class Excahnge_MA extends Command
     {
         $success = null;
         $accessToken = $this->connector->getToken('Akeneo');
-        //далі потрібно знайти які продукти змінилися/додані та в циклі відправити їх в Акенео
+        //далі потрібно знайти які продукти змінилися/додані за період(типу день) та в циклі відправити їх в Акенео
         //поки їх небагато, то можна всі слати
         $products = $this->marketProductRepository->findAll();
         $startTime = new \DateTime('now');
         foreach ($products as $product) {
             $sku = $product->getSku();
             $data = "{\"identifier\":\"$sku\",\"family\":\"Planten\",\"categories\":[\"Sierui_Allium\"],\"values\":{\"name\":
-        [{\"locale\":\"nl_NL\",\"scope\":\"haagplanten_net\",\"data\":\"delokm8. $sku\"}],\"websites\":
+        [{\"locale\":\"nl_NL\",\"scope\":\"haagplanten_net\",\"data\":\"test. $sku\"}],\"websites\":
         [{\"locale\":null,\"scope\":null,\"data\":[\"at_b2b_1\",\"at_b2c_1\",\"at_b2c_2\",\"be_b2c_1\",\"ch_b2b_1\",\"ch_b2c_1\",
         \"ch_b2c_2\",\"de_b2b_1\",\"de_b2c_1\",\"de_b2c_2\",\"dk_b2c_1\",\"fi_b2c_1\",\"fr_b2b_1\",\"fr_b2c_1\",\"it_b2c_1\",
         \"nl_b2b_1\",\"nl_b2c_1\",\"nl_b2c_2\",\"no_b2c_1\",\"se_b2c_1\"]}],\"tax_class\":[{\"locale\":null,\"scope\":

@@ -23,7 +23,7 @@ class CronDetails extends AbstractController
         $crontask_repository = $this->getDoctrine()->getRepository(Crontask::class);
         $crontask = $crontask_repository->findAll();
         $tasklog_repository = $this->getDoctrine()->getRepository(TaskLog::class);
-        $tasklog = $tasklog_repository->findBy(array(),array('id'=>'DESC'),3,0);
+        $tasklog = $tasklog_repository->findBy(array(),array('id'=>'DESC'),10,0);
         $quenylog_repository = $this->getDoctrine()->getRepository(QuenyLog::class);
         $quenylog = $quenylog_repository->findBy(array(),array('id'=>'DESC'),10,0);
 

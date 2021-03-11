@@ -66,20 +66,27 @@ class MarketSaveStock extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $channel = '9dad6222fe469a393ffb0720';
+        $startTime = new \DateTime('now');
         try {
             if ($this->condition->checkBusy()) {
                 throw new \Exception('Another process not terminated');
             } else {
                 $this->condition->createBusy();
                 $token = $this->connector->getToken('PlantsMarket');
-                $startTime = new \DateTime('now');
                 $response = $this->connector->getContent($token, 'PlantsMarket', $input->getOption('retry'),
                     'v1/channel/' . $channel . '/product/stock');
                 $endTime = new \DateTime('now');
-                $this->storeMarketToDb($response);
+                $importResult = $this->storeMarketToDb($response);
+                $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, strlen($response->getContent()), $endTime,
+                    (integer)$startTime->diff($endTime)->format("%f"), $response->getStatusCode(),
+                    $importResult[0], $importResult[0], $importResult[1]);
             }
         } catch (\Exception $e) {
             $this->condition->deleteBusy();
+            $endTime = new \DateTime('now');
+            $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, 0, $endTime,
+                (integer)$startTime->diff($endTime)->format("%f"), $e->getMessage(),
+                0, 0, 0);
             return Command::FAILURE;
         }
         $this->condition->deleteBusy();

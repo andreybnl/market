@@ -23,7 +23,7 @@
     </br>
     <a href="/login ">click here to re-LOGIN/LOGOUT</a>
     </br></br>
-    Last task logs:
+    Last RUN logs:
     <table class="table table-condensed" border="1" cellpadding="10">
         <tr>
             <th><h4> ID</h4></th>
@@ -53,24 +53,24 @@
             </tr>
         {% endfor %}
     </table>
-    </br>
-    Last CustomCommand logs:
-    <table class="table table-condensed" border="1" cellpadding="10">
-        <tr>
-            <th><h4> ID</h4></th>
-            <th><h4> queny </h4></th>
-            <th><h4> answer </h4></th>
-            <th><h4> last run </h4></th>
-            <th><h4> response </h4></th>
-        </tr>
-        {% for queny_log in queny_log %}
-            <tr>
-                <td> {{ queny_log.ID }}                 </td>
-                <td> {{ queny_log.quent}}                 </td>
-                <td> {{ queny_log.answer}}                 </td>
-                <td> {{ queny_log.dateTime | date("m/d/Y H/i/s") }}    </td>
-                <td> {{ queny_log.responceCode}}                 </td>
-            </tr>
-        {% endfor %}
-    </table>
+{#    </br>#}
+{#    Last CustomCommand logs:#}
+{#    <table class="table table-condensed" border="1" cellpadding="10">#}
+{#        <tr>#}
+{#            <th><h4> ID</h4></th>#}
+{#            <th><h4> queny </h4></th>#}
+{#            <th><h4> answer </h4></th>#}
+{#            <th><h4> last run </h4></th>#}
+{#            <th><h4> response </h4></th>#}
+{#        </tr>#}
+{#        {% for queny_log in queny_log %}#}
+{#            <tr>#}
+{#                <td> {{ queny_log.ID }}                 </td>#}
+{#                <td> {{ queny_log.quent}}                 </td>#}
+{#                <td> {{ queny_log.answer}}                 </td>#}
+{#                <td> {{ queny_log.dateTime | date("m/d/Y H/i/s") }}    </td>#}
+{#                <td> {{ queny_log.responceCode}}                 </td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#    </table>#}
 </div>

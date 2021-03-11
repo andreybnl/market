@@ -64,7 +64,7 @@ class TestManualRequest extends AbstractController
      * @Route("/cron_add")
      */
     //for test purposes only!
-    public function newCronTask(Request $request, $job_c = 'cron:speed_sync-catalog')
+    public function newCronTask(Request $request, $job_c = 'cron_prepared:market_product_stock_save')
     {
         $entityManager = $this->getDoctrine()->getManager();
         $Task = new Tasks();

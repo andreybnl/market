@@ -1,9 +1,7 @@
 <?php
 
-
 namespace App\Command;
 
-use App\Entity\QuenyLog;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -63,7 +61,6 @@ class MarketCommandAlt extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $startTime = new \DateTime('now');
-        $entityManager = $this->container->get('doctrine')->getManager();
         try {
             if ($this->condition->checkBusy()) {
                 throw new \Exception('Another process not terminated');
@@ -72,28 +69,19 @@ class MarketCommandAlt extends Command
                 $accessToken = $this->connector->getToken('PlantsMarket');
                 $response = $this->connector->getContent($accessToken, 'PlantsMarket',
                     $input->getOption('retry'), $input->getArgument('query'));
-                $Log = new QuenyLog();
-                $Log->setQuent('market_command' . ' ' . $input->getArgument('query'));
-                $Log->setAnswer($response->getContent());
-                $Log->setResponceCode($response->getStatusCode());
-                $Log->setDateTime($startTime);
-                $entityManager->persist($Log);
-                $entityManager->flush();
-                $endTime = new \DateTime('now');            //count throughout loop
+                $this->taskLogger->quenyLog('market_command' . ' ' . $input->getArgument('query'),
+                    $response->getContent(), $response->getStatusCode(), $startTime);
+
+                $endTime = new \DateTime('now');
                 $this->taskLogger->TaskLogAdd(static::$defaultName . ' ' . $input->getArgument('query'),
-                    $startTime, strlen($response->getContent()),$endTime,
-                    (integer)$startTime->diff($endTime)->format("%f"),$response->getStatusCode(), 0, 0);
+                    $startTime, strlen($response->getContent()), $endTime,
+                    (integer)$startTime->diff($endTime)->format("%f"), $response->getStatusCode(), 0, 0);
 
             }
         } catch (\Exception $e) {
             $this->condition->deleteBusy();
-            $Log = new QuenyLog();
-            $Log->setQuent('market_command' . ' ' . $input->getArgument('query'));
-            $Log->setAnswer($e->getMessage());
-            $Log->setResponceCode('0');
-            $Log->setDateTime($startTime);
-            $entityManager->persist($Log);
-            $entityManager->flush();
+            $this->taskLogger->quenyLog('market_command' . ' ' . $input->getArgument('query'),
+                $e->getMessage(), 0, $startTime);
             return Command::FAILURE;
         }
         $this->condition->deleteBusy();
