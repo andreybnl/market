@@ -3,8 +3,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Tasks;
-use App\Entity\Crontask;
 use App\Entity\TaskLog;
 use App\Entity\QuenyLog;
 use Symfony\Component\Routing\Annotation\Route;

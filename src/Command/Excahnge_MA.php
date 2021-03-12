@@ -176,7 +176,7 @@ class Excahnge_MA extends Command
         $startTime = new \DateTime('now');
         foreach ($products as $product) {
             $sku = $product->getSku();
-            $data = "{\"identifier\":\"$sku\",\"family\":\"Planten\",\"categories\":[\"Sierui_Allium\"],\"values\":{\"name\":
+            $data = "{\"identifier\":\"test. $sku\",\"family\":\"Planten\",\"categories\":[\"Sierui_Allium\"],\"values\":{\"name\":
         [{\"locale\":\"nl_NL\",\"scope\":\"haagplanten_net\",\"data\":\"test. $sku\"}],\"websites\":
         [{\"locale\":null,\"scope\":null,\"data\":[\"at_b2b_1\",\"at_b2c_1\",\"at_b2c_2\",\"be_b2c_1\",\"ch_b2b_1\",\"ch_b2c_1\",
         \"ch_b2c_2\",\"de_b2b_1\",\"de_b2c_1\",\"de_b2c_2\",\"dk_b2c_1\",\"fi_b2c_1\",\"fr_b2b_1\",\"fr_b2c_1\",\"it_b2c_1\",

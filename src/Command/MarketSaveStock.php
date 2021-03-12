@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\QuenyLog;
 use App\Model\Condition;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,7 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use App\Repository\MarketProductRepository;
-use App\Entity\MarketProduct;
 use App\Repository\SupplierRepository;
 use App\Model\Connector;
 use App\Model\TaskLogger;
