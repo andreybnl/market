@@ -17,7 +17,7 @@ use App\Model\TaskLogger;
 
 class AkeneoTestCreate extends Command
 {
-    protected static $defaultName = 'cron_not_prepared:test_akeneo_sync';
+    protected static $defaultName = 'cron_prepared:test_akeneo_sync';
 
     private $condition;
     private $taskLogger;
