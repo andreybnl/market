@@ -5,7 +5,6 @@ namespace App\Decorate\Jmose;
 use App\Model\TaskLogger;
 use JMose\CommandSchedulerBundle\Controller\BaseController;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
-use JMose\CommandSchedulerBundle\Form\Type\ScheduledCommandType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,8 +107,8 @@ class DetailController extends BaseController
             $entityManager->flush();
 
             // Add a flash message and do a redirect to the list
-            $this->get('session')->getFlashBag()
-                ->add('success', $this->translator->trans('flash.success', [], 'JMoseCommandScheduler'));
+//            $this->get('session')->getFlashBag()
+//                ->add('success', $this->translator->trans('flash.success', [], 'JMoseCommandScheduler'));
 
             return $this->redirect($this->generateUrl('jmose_command_scheduler_list'));
         }

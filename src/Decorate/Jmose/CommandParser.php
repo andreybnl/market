@@ -2,11 +2,11 @@
 
 namespace App\Decorate\Jmose;
 
+use JMose\CommandSchedulerBundle\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
-use JMose\CommandSchedulerBundle\Controller\BaseController;
 
 class CommandParser extends BaseController
 {
@@ -42,6 +42,7 @@ class CommandParser extends BaseController
         if (count($this->excludedNamespaces) > 0 && count($this->includedNamespaces) > 0) {
             throw new \InvalidArgumentException('Cannot combine excludedNamespaces with includedNamespaces');
         }
+
     }
 
     /**
@@ -56,8 +57,7 @@ class CommandParser extends BaseController
 
         $input = new ArrayInput(
             [
-                'command' => 'list',  //mur
-                //  'command' => 'list', 'namespace' => 'cron', //mur
+                'command' => 'list',
                 '--format' => 'xml',
             ]
         );

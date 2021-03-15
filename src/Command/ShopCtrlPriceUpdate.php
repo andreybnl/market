@@ -15,9 +15,9 @@ use App\Repository\SupplierRepository;
 use App\Model\Connector;
 use App\Model\TaskLogger;
 
-class AkeneoTestCreate extends Command
+class ShopCtrlPriceUpdate extends Command
 {
-    protected static $defaultName = 'cron_prepared:test_akeneo_sync';
+    protected static $defaultName = 'cron_prepared:test_shopctrl_price_sync';
 
     private $condition;
     private $taskLogger;
@@ -50,8 +50,8 @@ class AkeneoTestCreate extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Run Akeneo sync')
-            ->setHelp('This command allows you to market sync with Akeneo...')
+            ->setDescription('Run ShopCtrl price sync')
+            ->setHelp('This command allows you to market sync(price) with ShopCtrl...')
             ->addArgument('retry', InputArgument::OPTIONAL)
             ->addOption(
                 'retry',
@@ -65,7 +65,7 @@ class AkeneoTestCreate extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $success = $error = null;
-        $accessToken = $this->connector->getToken('Akeneo');
+        $accessToken = $this->connector->getToken('ShopCtrl');
         $startTime = new \DateTime('now');
         $products = $this->marketProductRepository->findBy(array(), array('id' => 'DESC'), 10, 0);
         try {
@@ -74,27 +74,23 @@ class AkeneoTestCreate extends Command
             } else {
                 $this->condition->createBusy();
                 foreach ($products as $product) {
-                    $sku = $product->getSku();
+                    $sku = 'test' . $product->getSku();
+                    $idRequest = json_decode($this->connector->getContent($accessToken, 'ShopCtrl',
+                        $input->getOption('retry'), 'v1/ShopGroup/1/Products/' . $sku, 'GET')->getContent());
+                    $id = json_decode(json_encode($idRequest), true)['Id'];
+                    $price = $product->getChnPriceRetail();
                     $name = $product->getName();
-                    $identifier = "test" . $sku;
-                    $data = "{\"identifier\":\"$identifier\",\"family\":\"Planten\",\"categories\":[\"Sierui_Allium\"],\"values\":{\"name\":
-        [{\"locale\":\"nl_NL\",\"scope\":\"haagplanten_net\",\"data\":\"$name\"}],\"websites\":
-        [{\"locale\":null,\"scope\":null,\"data\":[\"at_b2b_1\",\"at_b2c_1\",\"at_b2c_2\",\"be_b2c_1\",\"ch_b2b_1\",\"ch_b2c_1\",
-        \"ch_b2c_2\",\"de_b2b_1\",\"de_b2c_1\",\"de_b2c_2\",\"dk_b2c_1\",\"fi_b2c_1\",\"fr_b2b_1\",\"fr_b2c_1\",\"it_b2c_1\",
-        \"nl_b2b_1\",\"nl_b2c_1\",\"nl_b2c_2\",\"no_b2c_1\",\"se_b2c_1\"]}],\"tax_class\":[{\"locale\":null,\"scope\":
-        null,\"data\":\"HIGH\"}],\"config_name\":[{\"locale\":\"fi_FI\",\"scope\":\"haagplanten_net\",\"data\":
-        \"$name\"}],\"description\":[{\"locale\":\"da_DK\",\"scope\":\"haagplanten_net\",\"data\":\"danish desc\"}],
-        \"config_url_key\":[{\"locale\":\"da_DK\",\"scope\":\"haagplanten_net\",\"data\":\"test223456\"},{\"locale\":
-        \"fi_FI\",\"scope\":\"haagplanten_net\",\"data\":\"test\"}],\"meta_description\":[{\"locale\":
-        \"fi_FI\",\"scope\":\"haagplanten_net\",\"data\":\"test_fi(md)\"}],\"config_metadescription\":[{\"locale\":
-        \"fi_FI\",\"scope\":\"haagplanten_net\",\"data\":\"test_fi(cmd)\"}],\"shipment_transport_type\":[{\"locale\":
-        null,\"scope\":null,\"data\":[\"PALLET\"]}],\"shipment_transport_height\":[{\"locale\":null,\"scope\":
-        null,\"data\":\"GREATER_THAN_X\"}],\"shipment_points\":[{\"locale\":null,\"scope\":null,\"data\":
-        \"3.0000\"}],\"shipment_availability_from\":[{\"locale\":null,\"scope\":null,\"data\":
-        \"1\"}],\"shipment_availability_till\":[{\"locale\":null,\"scope\":null,\"data\":\"49\"}]}}";
-                    $response = $this->connector->getContent($accessToken, 'Akeneo',
-                        $input->getOption('retry'), "rest/v1/products/" . "test" . "$sku", 'PATCH', $data);
-                    if ($response->getStatusCode() == '201' || $response->getStatusCode() == '204') {
+                    $data = "{\"OrderComment\":\"\",\"MainImageChangedTimestamp\":null,\"SyncEnabled\":true,
+                    \"ShopGroupId\":1,\"Note\":\"\",\"RefCode\":\"\",\"ProductBrand\":null,\"ProductVariantParentId\":null,
+                    \"VariantInfo\":\"\",\"KeepStock\":true,\"IsShippable\":true,\"MinimumStock\":0,\"MainImageFileId\":null,
+                    \"Published\":true,\"PriceExVat\":\"$price\",
+                    \"ProductPropertyDefSetId\":null,\"TransportCategoryId\":null,\"ProductGroups\":[],\"Resources\":[],
+                    \"ProductRelations\":[],\"ProductVariantPropertyDefIds\":[],\"ProductVariantIds\":[],
+                    \"OriginCountryId\":null,\"OriginCountryCode\":null,\"Id\":\"$id\",\"Code\":\"$sku\",
+                    \"Name\":\"$name\",\"Hscode\":\"\",\"EAN\":\"\",\"Type\":0}";
+                    $response = $this->connector->getContent($accessToken, 'ShopCtrl',
+                        $input->getOption('retry'), 'v1/products', 'PUT', $data);
+                    if ($response->getStatusCode() == '200') {
                         $success++;
                     } else {
                         $error++;

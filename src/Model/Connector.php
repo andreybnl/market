@@ -28,9 +28,9 @@ class Connector
         try {
             $accessToken = null;
             $supplier = $this->supplierRepository->findOneBy(['name' => $supplierName]);
-            if ($supplier->getOauth2Key() || $supplier->getGrantType()) {
-                $tokenExpiredCheck = (((new \DateTime('now'))->getTimestamp()) - ($supplier->getTokenCreated()->getTimestamp()));
-                if (!($supplier->getTokenCreated()) || $tokenExpiredCheck > 3500) {
+            if ($supplier && ($supplier->getOauth2Key() || $supplier->getGrantType())) {
+                if (!($supplier->getTokenCreated()) ||
+                    (((new \DateTime('now'))->getTimestamp()) - ($supplier->getTokenCreated()->getTimestamp()) > 3500)) {
                     $json_prep = array("grant_type" => $supplier->getGrantType(), "username" => $supplier->getUser(),
                         "password" => $supplier->getPassword());
                     $add = array(
@@ -59,20 +59,22 @@ class Connector
                 }
             }
         } catch (\exception $e) {
-            return NULL;
         }
-        return NULL;
+        return $accessToken;
     }
 
     public function getContent($accessToken, $supplierName, $retry, $request, $type = 'GET', $body = NULL,
                                $header = "Content-Version: 1.1")
     {
-        if ($header == 'Content-Version: 1.1' && $type == 'PATCH') {
+        $response = NULL;
+        if ($header == 'Content-Version: 1.1' && $type == ('PATCH' || 'POST' || 'PUT')) {
             $header = "Content-type: application/json";
             $retry = 1;
         }
         try {
             $body = str_replace("\r\n", NULL, $body);
+            $body = str_replace("\n", NULL, $body);
+            $body = str_replace(" ", '', $body);
             $supplier = $this->supplierRepository->findOneBy(['name' => $supplierName]);
             if ($accessToken) {
                 $headers = array(
@@ -96,13 +98,11 @@ class Connector
                     $type,
                     $supplier->getApiUrl() . $request, $headers
                 );
-                if($response->getStatusCode())
-                {
+                if ($response->getStatusCode()) {
                     break;
                 }
             }
         } catch (\Exception $e) {
-            return $response;
         }
         return $response;
     }

@@ -30,18 +30,28 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-#    App\Model\TaskLogger:
-#        # ...
-#        calls:
-#            - setEm: ['@doctrine.orm.entity_manager']
-#    JMose\CommandSchedulerBundle\Controller\DetailController:
-#        class: App\Decorate\Jmose\DetailController
-#
-#    JMose\CommandSchedulerBundle\Controller\ListController:
-#        class: App\Decorate\Jmose\ListController
-#
+    App\Model\TaskLogger:
+        # ...
+        calls:
+            - setEm: ['@doctrine.orm.entity_manager']
+
+    JMose\CommandSchedulerBundle\Controller\DetailController:
+        class: App\Decorate\Jmose\DetailController
+
+    JMose\CommandSchedulerBundle\Controller\ListController:
+        class: App\Decorate\Jmose\ListController
+        public: true
+        autowire: true
+        calls:
+            - [ setTranslator, [ "@translator" ] ]
+
+#    JMose\CommandSchedulerBundle\Service\CommandParser:
+#        decorates: App\Decorate\Jmose\CommandParser
+#        arguments: ['@.inner']
+
 #    JMose\CommandSchedulerBundle\Service\CommandParser:
 #        class: App\Decorate\Jmose\CommandParser
-
+#
 #    JMose\CommandSchedulerBundle\Form\Type\CommandChoiceType:
-#        class: App\Decorate\Jmose\CommandChoiceType
+#        arguments:
+#            - '@JMose\CommandSchedulerBundle\Service\CommandParser'
