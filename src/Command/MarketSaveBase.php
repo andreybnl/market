@@ -91,6 +91,7 @@ class MarketSaveBase
                         } else {
                             $product->$setterValue(isset($result[$value]) ? $result[$value] : '0');
                         }
+                        $product->setEditTime(isset($result['editTime']) ? $result['editTime'] : '0');
                     }
                     $entityManager->persist($product);
                     $entityManager->flush();

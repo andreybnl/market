@@ -18,7 +18,7 @@ class MarketProduct
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $createTime;
 
@@ -166,6 +166,46 @@ class MarketProduct
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $shape_diameter;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $plantenbak_vorm;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $plantenbak_diameter;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $maximale_hoogte_in_cm;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $order_minimum;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $qty_increments;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $root;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $rootType;
 
     public function getId(): ?int
     {
@@ -528,6 +568,102 @@ class MarketProduct
     public function setCategory(?string $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getShapeDiameter(): ?string
+    {
+        return $this->shape_diameter;
+    }
+
+    public function setShapeDiameter(string $shape_diameter): self
+    {
+        $this->shape_diameter = $shape_diameter;
+
+        return $this;
+    }
+
+    public function getPlantenbakVorm(): ?string
+    {
+        return $this->plantenbak_vorm;
+    }
+
+    public function setPlantenbakVorm(?string $plantenbak_vorm): self
+    {
+        $this->plantenbak_vorm = $plantenbak_vorm;
+
+        return $this;
+    }
+
+    public function getPlantenbakDiameter(): ?string
+    {
+        return $this->plantenbak_diameter;
+    }
+
+    public function setPlantenbakDiameter(?string $plantenbak_diameter): self
+    {
+        $this->plantenbak_diameter = $plantenbak_diameter;
+
+        return $this;
+    }
+
+    public function getMaximaleHoogteInCm(): ?string
+    {
+        return $this->maximale_hoogte_in_cm;
+    }
+
+    public function setMaximaleHoogteInCm(?string $maximale_hoogte_in_cm): self
+    {
+        $this->maximale_hoogte_in_cm = $maximale_hoogte_in_cm;
+
+        return $this;
+    }
+
+    public function getOrderMinimum(): ?int
+    {
+        return $this->order_minimum;
+    }
+
+    public function setOrderMinimum(?int $order_minimum): self
+    {
+        $this->order_minimum = $order_minimum;
+
+        return $this;
+    }
+
+    public function getQtyIncrements(): ?int
+    {
+        return $this->qty_increments;
+    }
+
+    public function setQtyIncrements(?int $qty_increments): self
+    {
+        $this->qty_increments = $qty_increments;
+
+        return $this;
+    }
+
+    public function getRoot(): ?string
+    {
+        return $this->root;
+    }
+
+    public function setRoot(?string $root): self
+    {
+        $this->root = $root;
+
+        return $this;
+    }
+
+    public function getRootType(): ?string
+    {
+        return $this->rootType;
+    }
+
+    public function setRootType(?string $rootType): self
+    {
+        $this->rootType = $rootType;
 
         return $this;
     }

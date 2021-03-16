@@ -22,7 +22,9 @@
             <th><h4> category </h4></th>
         </tr>
 
-        {% for product in product %}
+        {% for product in product
+            | sort((a, b) => a.sku <=> b.sku)
+        %}
             <tr>
                 <td> {{ product.id }}                 </td>
                 <td> {{ product.sku }}           </td>

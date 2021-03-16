@@ -105,44 +105,50 @@ class MarketSaveProduct extends Command
                     $product = $this->marketProductRepository->findOneBy(['sku' => $result['sku']]);
                     if (!$product) {
                         $product = new MarketProduct();
+                        $product->setSku($result['sku']);
                     }
-                    //else if ($product->getEditTime() === $result['editTime']) {
-                    //    continue; } //producr change detected without EditDAta change!
-                    $product->setCreateTime(isset($result['createTime']) ? $result['createTime'] : '0');
+                    //else if ($product->getEditTime() === $result['editTime']) { // continue; } //product change detected without EditData change!
+
+                    //unused attributes(16032021)
+//                    $product->setCreateTime(isset($result['createTime']) ? $result['createTime'] : '0');
+//                    $product->setRangeIdentifier(isset($result['rangeIdentifier']) ? $result['rangeIdentifier'] : '0');
+//                    $product->setCoreIdentifier(isset($result['coreIdentifier']) ? $result['coreIdentifier'] : '0');
+//                    $product->setRetailHash(isset($result['_retailHash']) ? $result['_retailHash'] : '0');
+//                    $product->setBatchHashArray(isset($result['_batchHashArray']) ? $result['_batchHashArray'] : '0');
+//                    $product->setBatchHash(isset($result['_batchHash']) ? $result['_batchHash'] : '0');
+//                    $product->setCoreHash(isset($result['_coreHash']) ? $result['_coreHash'] : '0');
+//                    $product->setProductRangeHash(isset($result['_productRangeHash']) ? $result['_productRangeHash'] : '0');
+//                    $product->setProductGroupHash(isset($result['_productGroupHash']) ? $result['_productGroupHash'] : '0');
+//                    $product->setProductCoreHash(isset($result['_productCoreHash']) ? $result['_productCoreHash'] : '0');
+//                    $product->setBaseHash(isset($result['_baseHash']) ? $result['_baseHash'] : '0');
+//                    $product->setBtchHeightTo(isset($result['btch_height_to']) ? $result['btch_height_to'] : '0');
+//                    $product->setBatchIdOriginal(isset($result['batchIdOriginal']) ? $result['batchIdOriginal'] : '0');
+//                    $product->setBtchStockTotal(isset($result['btch_stock_total']) ? $result['btch_stock_total'] : '0');
+//                    $product->setBtchUnitWeight(isset($result['btch_unit_weight']) ? $result['btch_unit_weight'] : '0');
+//                    $product->setBtchContainerDiameter(isset($result['btch_container_diameter']) ? $result['btch_container_diameter'] : '0');
+
+                    //attributes added 16032021
+                    $product->setShapeDiameter(isset($result['shape_diameter']) ? $result['shape_diameter'] : '0');
+                    $product->setPlantenbakVorm(isset($result['plantenbak_vorm']) ? $result['plantenbak_vorm'] : '0');
+                    $product->setPlantenbakDiameter(isset($result['plantenbak_diameter']) ? $result['plantenbak_diameter'] : '0');
+                    $product->setMaximaleHoogteInCm(isset($result['maximale_hoogte_in_cm']) ? $result['maximale_hoogte_in_cm'] : '0');
+                    $product->setOrderMinimum(isset($result['order_minimum']) ? $result['order_minimum'] : '0');
+                    $product->setQtyIncrements(isset($result['qty_increments']) ? $result['qty_increments'] : '0');
+
+                    //existed attributes
                     $product->setEditTime(isset($result['editTime']) ? $result['editTime'] : '0');
-                    $product->setSku($result['sku']);
-                    $product->setRangeIdentifier(isset($result['rangeIdentifier']) ? $result['rangeIdentifier'] : '0');
-                    $product->setCoreIdentifier(isset($result['coreIdentifier']) ? $result['coreIdentifier'] : '0');
-                    $product->setRetailHash(isset($result['_retailHash']) ? $result['_retailHash'] : '0');
-                    $product->setBatchHashArray(isset($result['_batchHashArray']) ? $result['_batchHashArray'] : '0');
-                    $product->setBatchHash(isset($result['_batchHash']) ? $result['_batchHash'] : '0');
-                    $product->setCoreHash(isset($result['_coreHash']) ? $result['_coreHash'] : '0');
-                    $product->setProductRangeHash(isset($result['_productRangeHash']) ? $result['_productRangeHash'] : '0');
-                    $product->setProductGroupHash(isset($result['_productGroupHash']) ? $result['_productGroupHash'] : '0');
-                    $product->setProductCoreHash(isset($result['_productCoreHash']) ? $result['_productCoreHash'] : '0');
-                    $product->setBaseHash(isset($result['_baseHash']) ? $result['_baseHash'] : '0');
                     $product->setNameSearch(isset($result['name_search']) ? $result['name_search'] : '0');
                     $product->setName(isset($result['name']) ? $result['name'] : '0');
+                    $product->setBtchContainerShape(isset($result['shape']) ? $result['shape'] : '0');
+                    $product->setBtchContainerSize(isset($result['container_size']) ? $result['container_size'] : '0');
+                    $product->setBtchContainerType(isset($result['container_type']) ? $result['container_type'] : '0');
+                    $product->setBtchContainerContents(isset($result['container_contents']) ? $result['container_contents'] : '0');
                     $product->setRtlSizeCode(isset($result['size_code']) ? $result['size_code'] : '0');
                     $product->setBtchStock(isset($result['stock']) ? $result['stock'] : '0');
-                    $product->setBatchIdOriginal(isset($result['batchIdOriginal']) ? $result['batchIdOriginal'] : '0');
-                    $product->setBtchStockTotal(isset($result['btch_stock_total']) ? $result['btch_stock_total'] : '0');
-                    $product->setBtchContainerType(isset($result['container_type']) ? $result['container_type'] : '0');
-                    $product->setBtchUnitWeight(isset($result['btch_unit_weight']) ? $result['btch_unit_weight'] : '0');
-                    $product->setBtchContainerSize(isset($result['btch_container_size']) ? $result['btch_container_size'] : '0');
-                    $product->setBtchContainerShape(isset($result['shape']) ? $result['shape'] : '0');
-                    $product->setBtchContainerContents(isset($result['container_contents']) ? $result['container_contents'] : '0');
-                    $product->setBtchContainerDiameter(isset($result['btch_container_diameter']) ? $result['btch_container_diameter'] : '0');
                     $product->setChnPriceRetail(isset($result['price_retail']) ? $result['price_retail'] : '0');
-                    if (isset($result['btch_stem_height'])) {
-                        $product->setBtchStemHeight($result['btch_stem_height']);
-                    }
-                    if (isset($result['btch_height_to'])) {
-                        $product->setBtchHeightTo($result['btch_height_to']);
-                    }
-                    if (isset($result['btch_height_from'])) {
-                        $product->setBtchHeightFrom($result['btch_height_from']);
-                    }
+                    $product->setBtchHeightFrom(isset($result['height_from']) ? $result['height_from'] : '0');
+                    $product->setBtchStemHeight(isset($result['height']) ? $result['height'] : '0');
+
                     $entityManager->persist($product);
                     $entityManager->flush();
                     $productCount++;
