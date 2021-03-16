@@ -108,7 +108,6 @@ class MarketSaveProduct extends Command
                     }
                     //else if ($product->getEditTime() === $result['editTime']) {
                     //    continue; } //producr change detected without EditDAta change!
-
                     $product->setCreateTime(isset($result['createTime']) ? $result['createTime'] : '0');
                     $product->setEditTime(isset($result['editTime']) ? $result['editTime'] : '0');
                     $product->setSku($result['sku']);
@@ -124,17 +123,17 @@ class MarketSaveProduct extends Command
                     $product->setBaseHash(isset($result['_baseHash']) ? $result['_baseHash'] : '0');
                     $product->setNameSearch(isset($result['name_search']) ? $result['name_search'] : '0');
                     $product->setName(isset($result['name']) ? $result['name'] : '0');
-                    $product->setRtlSizeCode(isset($result['rtl_size_code']) ? $result['rtl_size_code'] : '0');
-             //       $product->setBtchStock(isset($result['btch_stock']) ? $result['btch_stock'] : '0');
+                    $product->setRtlSizeCode(isset($result['size_code']) ? $result['size_code'] : '0');
+                    $product->setBtchStock(isset($result['stock']) ? $result['stock'] : '0');
                     $product->setBatchIdOriginal(isset($result['batchIdOriginal']) ? $result['batchIdOriginal'] : '0');
                     $product->setBtchStockTotal(isset($result['btch_stock_total']) ? $result['btch_stock_total'] : '0');
-                    $product->setBtchContainerType(isset($result['btch_container_type']) ? $result['btch_container_type'] : '0');
+                    $product->setBtchContainerType(isset($result['container_type']) ? $result['container_type'] : '0');
                     $product->setBtchUnitWeight(isset($result['btch_unit_weight']) ? $result['btch_unit_weight'] : '0');
                     $product->setBtchContainerSize(isset($result['btch_container_size']) ? $result['btch_container_size'] : '0');
-                    $product->setBtchContainerShape(isset($result['btch_container_shape']) ? $result['btch_container_shape'] : '0');
-                    $product->setBtchContainerContents(isset($result['btch_container_contents']) ? $result['btch_container_contents'] : '0');
+                    $product->setBtchContainerShape(isset($result['shape']) ? $result['shape'] : '0');
+                    $product->setBtchContainerContents(isset($result['container_contents']) ? $result['container_contents'] : '0');
                     $product->setBtchContainerDiameter(isset($result['btch_container_diameter']) ? $result['btch_container_diameter'] : '0');
-              //      $product->setChnPriceRetail(isset($result['chn_price_retail']) ? $result['chn_price_retail'] : '0');
+                    $product->setChnPriceRetail(isset($result['price_retail']) ? $result['price_retail'] : '0');
                     if (isset($result['btch_stem_height'])) {
                         $product->setBtchStemHeight($result['btch_stem_height']);
                     }

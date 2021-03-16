@@ -106,13 +106,8 @@ class MarketSavePrice extends Command
                     if (!$product) {
                         break;
                     }
-                    //else if ($product->getEditTime() === $result['editTime']) {
-                    //    continue; } //producr change detected without EditDAta change!
-
-                    $product->setCreateTime(isset($result['createTime']) ? $result['createTime'] : '0');
-                    $product->setSku($result['sku']);
-                    $product->setChnPriceRetail(isset($result['chn_price_retail']) ? $result['chn_price_retail'] : '0');
-
+                    $product->setEditTime(isset($result['editTime']) ? $result['editTime'] : '0');
+                    $product->setChnPriceRetail(isset($result['price_retail']) ? $result['price_retail'] : '0');
                     $entityManager->persist($product);
                     $entityManager->flush();
                     $productCount++;

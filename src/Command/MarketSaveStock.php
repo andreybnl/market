@@ -104,13 +104,7 @@ class MarketSaveStock extends Command
                     if (!$product) {
                         break;
                     }
-                    //else if ($product->getEditTime() === $result['editTime']) {
-                    //    continue; } //producr change detected without EditDAta change!
-
-                    $product->setCreateTime(isset($result['createTime']) ? $result['createTime'] : '0');
-                    $product->setSku($result['sku']);
-                    $product->setBtchStock(isset($result['btch_stock']) ? $result['btch_stock'] : '0');
-
+                    $product->setBtchStock(isset($result['stock']) ? $result['stock'] : '0');
                     $entityManager->persist($product);
                     $entityManager->flush();
                     $productCount++;
