@@ -19,6 +19,7 @@
             <th><h4> stock </h4></th>
             <th><h4> edit time </h4></th>
             <th><h4> RTL size </h4></th>
+            <th><h4> category </h4></th>
         </tr>
 
         {% for product in product %}
@@ -31,6 +32,7 @@
                 <td> {{ product.btchStock }}           </td>
                 <td> {{ product.editTime }}           </td>
                 <td> {{ product.rtlSizeCode }}           </td>
+                <td> {{ product.category }}           </td>
             </tr>
         {% endfor %}
     </table>
