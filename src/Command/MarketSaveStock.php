@@ -77,7 +77,7 @@ class MarketSaveStock extends Command
                 $importResult = $this->storeMarketToDb($response);
                 $this->taskLogger->TaskLogAdd(static::$defaultName, $startTime, strlen($response->getContent()), $endTime,
                     (integer)$startTime->diff($endTime)->format("%f"), $response->getStatusCode(),
-                    $importResult[0], $importResult[0], $importResult[1]);
+                    $importResult[1]+$importResult[0], $importResult[1], $importResult[0]);
             }
         } catch (\Exception $e) {
             $this->condition->deleteBusy();
