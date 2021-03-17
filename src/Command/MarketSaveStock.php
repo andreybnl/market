@@ -93,7 +93,7 @@ class MarketSaveStock extends Command
 
     private function storeMarketToDb($response)
     {
-        $productCount = $error = null;
+        $productCount = $error = 0;
         $entityManager = $this->container->get('doctrine')->getManager();
 
         $data = json_decode($response->getContent(), true);

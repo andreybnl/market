@@ -71,7 +71,7 @@ class MarketSaveBase
 
     private function storeMarketToDb($response, $requiredFieldsArray)
     {
-        $productCount = $error = null;
+        $productCount = $error = 0;
         $entityManager = $this->container->get('doctrine')->getManager();
 
         $data = json_decode($response->getContent(), true);
@@ -91,7 +91,7 @@ class MarketSaveBase
                         } else {
                             $product->$setterValue(isset($result[$value]) ? $result[$value] : '0');
                         }
-                        $product->setEditTime(isset($result['editTime']) ? $result['editTime'] : '0');
+                        //$product->setEditTime(isset($result['editTime']) ? $result['editTime'] : '0');
                     }
                     $entityManager->persist($product);
                     $entityManager->flush();

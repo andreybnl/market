@@ -1,0 +1,35 @@
+<head>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.css"/>
+</head>
+
+<style>
+    .text-center {
+        align-items: center;
+    }
+    .dataTables_wrapper {
+        margin: 0 auto;
+        width: 75%;
+    }
+</style>
+<a href="/showcronalt ">click here for return to mainmenu</a>
+</br>
+<body>
+<div id="products">Loadi...</div>
+
+{# {% block javascripts_footer %} #}
+{# <script src="{{ asset('vendor/jquery/jquery.min.js') }}"> #}
+{# {% endblock %} #}
+{# <script src="jquery.js"></script> #}
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>
+    <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#products').initDataTables({{ datatable_settings(datatable) }},
+                {searching: true, dom: '<"wrapper"flipt>'});
+        });
+    </script>
+{% endblock %}
+</body>
